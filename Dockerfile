@@ -283,7 +283,7 @@ RUN mkdir $LIGHTNINGD_DATA && \
 VOLUME [ "/root/.lightning" ]
 
 COPY --from=builder /tmp/lightning_install/ /usr/local/
-COPY --from=builder-python /usr/local/lib/python3/dist-packages/ /usr/local/lib/python3/dist-packages/
+COPY --from=builder-python /usr/local/lib/python3.11/dist-packages/ /usr/local/lib/python3.11/dist-packages/
 COPY --from=downloader /opt/bitcoin/bin /usr/bin
 COPY --from=downloader /opt/litecoin/bin /usr/bin
 COPY tools/docker-entrypoint.sh entrypoint.sh
