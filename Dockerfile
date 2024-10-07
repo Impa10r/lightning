@@ -7,7 +7,9 @@
 # * final: Creates the runtime image.
 
 ARG DEFAULT_TARGETPLATFORM="linux/amd64"
-ARG BASE_DISTRO="debian:bullseye-slim"
+# ARG BASE_DISTRO="debian:bullseye-slim"
+# switch distro for compatibility with peerswap
+ARG BASE_DISTRO="debian:bookworm-slim"
 
 FROM --platform=$BUILDPLATFORM ${BASE_DISTRO} AS base-downloader
 RUN set -ex \
