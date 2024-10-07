@@ -76,7 +76,7 @@ RUN apt-get update -qq && \
         pkg-config \
         libssl-dev \
         protobuf-compiler \
-        python3.9 \
+        python3 \
         python3-dev \
         python3-mako \
         python3-pip \
@@ -87,12 +87,13 @@ RUN apt-get update -qq && \
         qemu-user-static \
         wget \
         unzip \
-        tclsh
+        tclsh \
+        libc6 libc6-dev
 
 ENV PATH="/root/.local/bin:$PATH"
 ENV PYTHON_VERSION=3
 RUN curl -sSL https://install.python-poetry.org | python3 -
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN pip3 install --upgrade pip setuptools wheel
 
 RUN wget -q https://zlib.net/fossils/zlib-1.2.13.tar.gz -O zlib.tar.gz && \
@@ -229,13 +230,13 @@ RUN apt-get update -qq && \
         build-essential \
         libffi-dev \
         libssl-dev \
-        python3.9 \
+        python3 \
         python3-dev \
         python3-pip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 ENV PYTHON_VERSION=3
 RUN pip3 install --upgrade pip setuptools wheel
 
@@ -265,8 +266,9 @@ RUN apt-get update && \
       socat \
       inotify-tools \
       jq \
-      python3.9 \
+      python3 \
       python3-pip \
+      libc6 libc6-dev \
       libpq5 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -281,7 +283,7 @@ RUN mkdir $LIGHTNINGD_DATA && \
 VOLUME [ "/root/.lightning" ]
 
 COPY --from=builder /tmp/lightning_install/ /usr/local/
-COPY --from=builder-python /usr/local/lib/python3.9/dist-packages/ /usr/local/lib/python3.9/dist-packages/
+COPY --from=builder-python /usr/local/lib/python3/dist-packages/ /usr/local/lib/python3/dist-packages/
 COPY --from=downloader /opt/bitcoin/bin /usr/bin
 COPY --from=downloader /opt/litecoin/bin /usr/bin
 COPY tools/docker-entrypoint.sh entrypoint.sh
