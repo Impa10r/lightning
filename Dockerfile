@@ -106,7 +106,7 @@ RUN git clone --recursive /tmp/lightning . && \
 
 # Do not build python plugins (clnrest & wss-proxy) here, python doesn't support cross compilation.
 RUN sed -i '/^clnrest\|^wss-proxy/d' pyproject.toml && poetry export -o requirements.txt --without-hashes
-RUN pip3 install -r requirements.txt && pip3 cache purge --break-system-packages
+RUN pip3 install -r requirements.txt --break-system-packages && pip3 cache purge
 WORKDIR /
 
 FROM base-builder AS base-builder-linux-amd64
