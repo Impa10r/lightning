@@ -94,7 +94,7 @@ ENV PATH="/root/.local/bin:$PATH"
 ENV PYTHON_VERSION=3
 RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-RUN pip3 install --upgrade pip setuptools wheel
+RUN pip3 install --upgrade pip setuptools wheel --break-system-packages
 
 RUN wget -q https://zlib.net/fossils/zlib-1.2.13.tar.gz -O zlib.tar.gz && \
     wget -q https://www.sqlite.org/2019/sqlite-src-3290000.zip -O sqlite.zip
@@ -106,7 +106,7 @@ RUN git clone --recursive /tmp/lightning . && \
 
 # Do not build python plugins (clnrest & wss-proxy) here, python doesn't support cross compilation.
 RUN sed -i '/^clnrest\|^wss-proxy/d' pyproject.toml && poetry export -o requirements.txt --without-hashes
-RUN pip3 install -r requirements.txt && pip3 cache purge
+RUN pip3 install -r requirements.txt && pip3 cache purge --break-system-packages
 WORKDIR /
 
 FROM base-builder AS base-builder-linux-amd64
@@ -238,7 +238,7 @@ RUN apt-get update -qq && \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 ENV PYTHON_VERSION=3
-RUN pip3 install --upgrade pip setuptools wheel
+RUN pip3 install --upgrade pip setuptools wheel --break-system-packages
 
 # Copy rustup_install_opts.txt file from builder
 COPY --from=builder /tmp/rustup_install_opts.txt /tmp/rustup_install_opts.txt
@@ -249,11 +249,11 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y ${RU
 
 WORKDIR /opt/lightningd/plugins/clnrest
 COPY --from=builder /opt/lightningd/plugins/clnrest/requirements.txt .
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --break-system-packages
 
 WORKDIR /opt/lightningd/plugins/wss-proxy
 COPY --from=builder /opt/lightningd/plugins/wss-proxy/requirements.txt .
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --break-system-packages
 RUN pip3 cache purge
 
 WORKDIR /opt/lightningd
