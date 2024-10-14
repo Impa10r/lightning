@@ -90,7 +90,7 @@ RUN apt-get update -qq && \
         tclsh \
         libc6 libc6-dev
 
-ENV PATH="/lightning/.local/bin:$PATH"
+ENV PATH="/root/.local/bin:$PATH"
 ENV PYTHON_VERSION=3
 RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
