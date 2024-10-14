@@ -183,7 +183,7 @@ RUN unzip sqlite.zip \
     && make install && cd .. && rm sqlite.zip && rm -rf sqlite-*
 
 ENV RUST_PROFILE=release
-ENV PATH="/lightning/.cargo/bin:/lightning/.local/bin:$PATH"
+ENV PATH="/root/.cargo/bin:/root/.local/bin:$PATH"
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y ${RUSTUP_INSTALL_OPTS}
 RUN rustup toolchain install stable --component rustfmt --allow-downgrade
 
@@ -244,7 +244,7 @@ RUN pip3 install --upgrade pip setuptools wheel --break-system-packages
 COPY --from=builder /tmp/rustup_install_opts.txt /tmp/rustup_install_opts.txt
 # Setup ENV $RUSTUP_INSTALL_OPTS for this stage
 RUN export $(cat /tmp/rustup_install_opts.txt)
-ENV PATH="/lightning/.cargo/bin:$PATH"
+ENV PATH="/root/.cargo/bin:$PATH"
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y ${RUSTUP_INSTALL_OPTS}
 
 WORKDIR /opt/lightningd/plugins/clnrest
