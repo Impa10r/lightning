@@ -273,7 +273,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV LIGHTNINGD_DATA=/lightning/.lightning
+ENV LIGHTNINGD_DATA=/home/lightning/.lightning
 ENV LIGHTNINGD_RPC_PORT=9835
 ENV LIGHTNINGD_PORT=9735
 ENV LIGHTNINGD_NETWORK=bitcoin
