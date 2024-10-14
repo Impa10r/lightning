@@ -90,7 +90,7 @@ RUN apt-get update -qq && \
         tclsh \
         libc6 libc6-dev
 
-ENV PATH="/root/.local/bin:$PATH"
+ENV PATH="/lightning/.local/bin:$PATH"
 ENV PYTHON_VERSION=3
 RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
@@ -183,7 +183,7 @@ RUN unzip sqlite.zip \
     && make install && cd .. && rm sqlite.zip && rm -rf sqlite-*
 
 ENV RUST_PROFILE=release
-ENV PATH="/root/.cargo/bin:/root/.local/bin:$PATH"
+ENV PATH="/lightning/.cargo/bin:/lightning/.local/bin:$PATH"
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y ${RUSTUP_INSTALL_OPTS}
 RUN rustup toolchain install stable --component rustfmt --allow-downgrade
 
@@ -244,7 +244,7 @@ RUN pip3 install --upgrade pip setuptools wheel --break-system-packages
 COPY --from=builder /tmp/rustup_install_opts.txt /tmp/rustup_install_opts.txt
 # Setup ENV $RUSTUP_INSTALL_OPTS for this stage
 RUN export $(cat /tmp/rustup_install_opts.txt)
-ENV PATH="/root/.cargo/bin:$PATH"
+ENV PATH="/lightning/.cargo/bin:$PATH"
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y ${RUSTUP_INSTALL_OPTS}
 
 WORKDIR /opt/lightningd/plugins/clnrest
@@ -273,14 +273,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV LIGHTNINGD_DATA=/root/.lightning
+ENV LIGHTNINGD_DATA=/lightning/.lightning
 ENV LIGHTNINGD_RPC_PORT=9835
 ENV LIGHTNINGD_PORT=9735
 ENV LIGHTNINGD_NETWORK=bitcoin
 
 RUN mkdir $LIGHTNINGD_DATA && \
     touch $LIGHTNINGD_DATA/config
-VOLUME [ "/root/.lightning" ]
+VOLUME [ "/lightning/.lightning" ]
 
 COPY --from=builder /tmp/lightning_install/ /usr/local/
 COPY --from=builder-python /usr/local/lib/python3.11/dist-packages/ /usr/local/lib/python3.11/dist-packages/
