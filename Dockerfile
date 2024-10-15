@@ -280,7 +280,7 @@ ENV LIGHTNINGD_NETWORK=bitcoin
 
 RUN mkdir -p $LIGHTNINGD_DATA && \
     touch $LIGHTNINGD_DATA/config
-VOLUME [ "/lightning/.lightning" ]
+VOLUME [ "/home/lightning/.lightning" ]
 
 COPY --from=builder /tmp/lightning_install/ /usr/local/
 COPY --from=builder-python /usr/local/lib/python3.11/dist-packages/ /usr/local/lib/python3.11/dist-packages/
